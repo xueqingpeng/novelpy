@@ -133,3 +133,10 @@ Paper/mindmap.png
 authors_sample.zip
 *.p
 *.pkl
+
+# remove en_core related
+en_core_sci_lg*
+Data/
+Result/
+*.tsv
+*.swp

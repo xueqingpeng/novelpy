@@ -275,7 +275,7 @@ class Shibayama2021(Dataset):
                 else:
                     if self.infos:
                         self.list_of_insertion.append({self.id_variable: doc[self.id_variable],'shibayama': self.infos})
-
+        # print(f"* self.list_of_insertion: {self.list_of_insertion}")
         if self.client_name:
             if "output_shibayama" not in self.db.list_collection_names():
                 print("Init output collection with index on id_variable ...")
