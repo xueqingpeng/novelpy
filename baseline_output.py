@@ -1,6 +1,7 @@
 # %%
 import os, json
 import pandas as pd
+import numpy as np
 from tqdm import tqdm
 
 
@@ -21,9 +22,9 @@ def read_json_for_embe(file_path, embedding="title"):
     
     df = pd.DataFrame(data)
     if embedding == "title":
-        df.iloc[:, 1] = df.iloc[:, 1].apply(lambda x: x['shibayama_title_embedding']['stats']['mean'])
+        df.iloc[:, 1] = df.iloc[:, 1].apply(lambda x: x['shibayama_title_embedding']['percentiles']['100%'])
     elif embedding == "abstract":
-        df.iloc[:, 1] = df.iloc[:, 1].apply(lambda x: x['scores_array_abstract_embedding'][0])
+        df.iloc[:, 1] = df.iloc[:, 1].apply(lambda x: x.get('shibayama_abstract_embedding', {}).get('percentiles', {}).get('100%', np.nan))
     df.rename(columns={'shibayama': 'shibayama_'+embedding}, inplace=True)
     # print(f"* loaded {len(df)} lines from {file_path}!")
     return df
@@ -63,7 +64,7 @@ merged_df = df_foster
 for df in [df_lee, df_uzzi, df_wang, df_shibayama_title, df_shibayama_abstract, df_foster2, df_lee2, df_uzzi2, df_wang2]:
     merged_df = pd.merge(merged_df, df, on='PMID', how='outer')
 merged_df = merged_df.rename(columns={'PMID': 'pmid'})
-# merged_df.to_csv('./baseline_result.tsv', sep='\t', index=False)
+# merged_df.to_csv('./baseline_results.tsv', sep='\t', index=False)
 
 
 # %%
